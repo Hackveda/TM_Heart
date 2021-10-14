@@ -58,6 +58,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MainActivity extends WearableActivity implements SensorEventListener, DataClient.OnDataChangedListener {
 
@@ -70,6 +71,9 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private int mutecounter = 0;
     private SensorManager sensorService;
     private Sensor heartSensor;
+    final int min = 70;
+    final int max = 75;
+    private TextView tvHeartRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,12 +146,18 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             }
         });
 
+        tvHeartRate = (TextView) findViewById(R.id.lblapptitle_two_text_view);
+
         new CountDownTimer(216000000, 1000){
 
             @Override
             public void onTick(long millisUntilFinished) {
                 Random rand = new Random();
-                sendData(Integer.toString(rand.nextInt(190)));
+
+                int rate = ThreadLocalRandom.current().nextInt(min, max);
+                sendData(Integer.toString(rate));
+                tvHeartRate.setText(Integer.toString(rate));
+                tvHeartRate.setTextSize(50);
             }
 
             @Override
@@ -215,7 +225,6 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         //Toast.makeText(getApplicationContext(), Float.toString(heart_rate), Toast.LENGTH_LONG).show();
         animator.setDuration(60000/heart_rate);
         animator.start();
-        TextView tvHeartRate = (TextView) findViewById(R.id.lblapptitle_two_text_view);
         tvHeartRate.setText(Integer.toString(heart_rate));
         tvHeartRate.setTextSize(50);
 

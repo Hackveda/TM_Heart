@@ -159,6 +159,14 @@ public class LoginPageActivity extends AppCompatActivity {
 							String height = responseObject.getString("Height");
 							String weight = responseObject.getString("Weight");
 							String sex = responseObject.getString("Sex");
+							if(sex.matches("M")){
+								sex = "0";
+							}else if(sex.matches("F")){
+								sex = "1";
+							}else {
+								sex = "2";
+							}
+
 							String refcode = responseObject.getString("RefCode");
 
 
